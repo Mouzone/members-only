@@ -3,5 +3,5 @@ module.exports.signUpGet = (req, res) => {
 }
 
 module.exports.signUpPost = (req, res) => {
-
+    
 }
