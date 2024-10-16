@@ -94,3 +94,12 @@ exports.joinClubPost = async (req, res) => {
 exports.logInGet = (req, res) => {
     res.render("login", {title: "Log In", errors: []})
 }
+
+exports.logOutPost = (req, res, next) => {
+    req.logout((error) => {
+        if (error) {
+            return next(error)
+        }
+        res.redirect("/")
+    })
+}

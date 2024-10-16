@@ -17,4 +17,6 @@ appRouter.post("/login",
     )
 )
 
+appRouter.post("/logout", appController.logOutPost)
+
 module.exports = appRouter
