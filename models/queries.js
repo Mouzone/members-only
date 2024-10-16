@@ -1,6 +1,6 @@
 const db = require("../config/database")
 
-module.exports.insertUser = async (first_name, last_name, username, password, membership_id) => {
+exports.insertUser = async (first_name, last_name, username, password, membership_id) => {
     await db.query(
         `INSERT INTO account (first_name, last_name, username, password, membership_id)
         VALUES ($1, $2, $3, $4, $5)`,
@@ -8,7 +8,7 @@ module.exports.insertUser = async (first_name, last_name, username, password, me
         )
 }
 
-module.exports.findUsername = async (username) => {
+exports.findUsername = async (username) => {
     const { rows } = await db.query(
         `SELECT * FROM account
         WHERE username = $1`,

@@ -1,7 +1,8 @@
 const queries = require("../models/queries")
 const { body, validationResult } = require("express-validator")
+const bcrypt = require("bcryptjs")
 
-module.exports.signUpGet = (req, res) => {
+exports.signUpGet = (req, res) => {
     res.render("sign-up", {title: "Sign Up"})
 }
 
@@ -27,7 +28,7 @@ const validateUser = [
         .matches(/\d/).withMessage("Password must contain at least one number")
         .matches(/[a-z]/).withMessage("Password must contain at least one lowercase letter")
         .matches(/[A-Z]/).withMessage("Password must contain at least one uppercase letter")
-        .matches(/\W/).withMessage("Password must contain at least one special character"),,
+        .matches(/\W/).withMessage("Password must contain at least one special character"),
 
     body("confirm_password")
         .custom((value, { req }) => {
@@ -38,7 +39,7 @@ const validateUser = [
         }),
 ]
 
-module.exports.signUpPost = [
+exports.signUpPost = [
     validateUser,
     async (req, res) => {
         const errors = validationResult(req)
@@ -59,12 +60,10 @@ module.exports.signUpPost = [
                 hashedPassword,
                 NO_MEMBERSHIP,
             )
-
             res.redirect("/")
         } catch(error) {
             console.error("Error inserting user", error)
-            res.render(500).render("sign-up", { title: "Sign Up", errors: ["Internal Service Error"]})
+            res.status(500).render("sign-up", { title: "Sign Up", errors: ["Internal Service Error"]})
         }
-
     }
 ]
