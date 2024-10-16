@@ -26,3 +26,12 @@ exports.findById = async (account_id) => {
 
     return rows
 }
+
+exports.updateToMember = async (account_id) => {
+    await db.query(
+        `UPDATE account
+        SET membership_id = 2
+        WHERE account_id = $1`,
+        [account_id]
+    )
+}

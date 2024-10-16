@@ -73,9 +73,23 @@ exports.joinClubGet =  (req, res) => {
     res.render("join-club", {title: "Join Club", errors: []})
 }
 
-// exports.joinClubPost = async (req, res) => {
-//     await Account.updateToMember()
-// }
+exports.joinClubPost = async (req, res) => {
+    // Check if the user is authenticated
+    if (!req.session.passport || !req.session.passport.user) {
+        return res.status(401).send('User not authenticated') // or redirect to login
+    }
+
+    const account_id = req.session.passport.user
+
+    try {
+        await Account.updateToMember(account_id)
+        res.redirect("/")
+    } catch (error) {
+        console.error('Error updating membership:', error)
+        res.status(500).send('An error occurred while joining the club')
+    }
+}
+
 
 exports.logInGet = (req, res) => {
     res.render("login", {title: "Log In", errors: []})
