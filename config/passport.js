@@ -7,8 +7,8 @@ const Account = require("../models/account")
 passport.use(new LocalStrategy(
     async (username, password, done) => {
         try {
-            const { rows } = await Account.findByUsername(username)
-            const user = rows[0]
+            const result = await Account.findByUsername(username)
+            const user = result[0]
 
             if (!user) {
                 return done(null, false, { message: "Incorrect username." })
@@ -27,8 +27,8 @@ passport.use(new LocalStrategy(
 passport.serializeUser((user, done) => done(null, user.account_id))
 passport.deserializeUser(async (id, done) => {
     try {
-        const { rows } = await Account.findById(id)
-        const user = rows[0]
+        const result = await Account.findById(id)
+        const user = result[0]
         if (!user) {
             return done(null, false)
         }

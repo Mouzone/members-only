@@ -14,7 +14,6 @@ exports.findByUsername = async (username) => {
         WHERE username = $1`,
         [username]
     )
-
     return rows
 }
 
