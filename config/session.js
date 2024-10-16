@@ -1,5 +1,5 @@
 const session = require('express-session')
-const pool = require("database")
+const pool = require("./database")
 const pgSession = require("connect-pg-simple")(session)
 
 module.exports = session({

@@ -1,7 +1,7 @@
 const express = require('express')
 const appRouter = require('./routers/appRouter')
-const passport = require("/config/passport")
-const session = require("/config/session")
+const passport = require("./config/passport")
+const session = require("./config/session")
 
 const app = express()
 app.set("views", __dirname + "/views")
