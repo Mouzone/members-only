@@ -3,7 +3,7 @@ const { body, validationResult } = require("express-validator")
 const bcrypt = require("bcryptjs")
 
 exports.signUpGet = (req, res) => {
-    res.render("sign-up", {title: "Sign Up"})
+    res.render("sign-up", {title: "Sign Up", errors: []})
 }
 
 const validateUser = [

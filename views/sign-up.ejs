@@ -5,7 +5,12 @@
     </head>
     <body>
         <h1><%= title %></h1>
-        <form action="/sign-up" method="post">
+        <div>
+            <% errors.forEach(error => {%>
+                <%= error.msg %>
+            <% })%>
+        </div>
+        <form action="/sign-up" method="POST">
             <label for="first_name"> First Name </label>
             <input id="first_name" type="text" name="first_name" required>
             <label for="last_name"> Last Name </label>
