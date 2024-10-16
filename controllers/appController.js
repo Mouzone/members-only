@@ -6,6 +6,7 @@ exports.signUpGet = (req, res) => {
     res.render("sign-up", {title: "Sign Up", errors: []})
 }
 
+// todo: write tests for validateUser
 const validateUser = [
     body("first_name").trim()
         .isAlpha().withMessage("First name must only contain letters"),
@@ -67,3 +68,11 @@ exports.signUpPost = [
         }
     }
 ]
+
+exports.joinClubGet =  (req, res) => {
+    res.render("join-club", {title: "Join Club", errors: []})
+}
+
+// exports.joinClubPost = async (req, res) => {
+//     await queries.updateToMember()
+// }
