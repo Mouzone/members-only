@@ -78,5 +78,5 @@ exports.joinClubGet =  (req, res) => {
 // }
 
 exports.logInGet = (req, res) => {
-    res.render("log-in", {title: "Log In", errors: []})
+    res.render("login", {title: "Log In", errors: []})
 }
