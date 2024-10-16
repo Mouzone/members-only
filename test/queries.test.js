@@ -8,11 +8,11 @@ describe('Query Account Table', function () {
 
         try {
             client = await db.connect()
-            await insertUser("John", "Doe", "johndoe", "securepassword"); // Insert user into the table
+            await insertUser("John", "Doe", "johndoe", "securepassword", 1); // Insert user into the table
 
             const result = await client.query(`SELECT * FROM account WHERE username = $1`, ["johndoe"])
             expect(result.rows).to.have.lengthOf(1)
-            expect(result.rows[0]).to.include({ first_name: "John", last_name: "Doe", username: "johndoe" })
+            expect(result.rows[0]).to.include({ first_name: "John", last_name: "Doe", username: "johndoe", membership_id: 1 })
         } catch (error) {
             expect.fail('Failed to insert into Account table: ' + error.message)
         } finally {
