@@ -8,42 +8,63 @@ module.exports.signUpGet = (req, res) => {
 const validateUser = [
     body("first_name").trim()
         .isAlpha().withMessage("First name must only contain letters"),
+
     body("last_name").trim()
         .isAlpha().withMessage("Last name must only contain letters"),
+
     body("username").trim()
-        .custom(async (value, {req}) => {
+        .matches(/^\S*$/).withMessage("Username must not contain spaces") // Check for spaces
+        .custom(async (value) => {
             const result = await queries.findUsername(value)
-            return result.length === 0
-        }).withMessage("Username already in use"),
+            if (result.length !== 0) {
+                throw new Error("Username already in use")
+            }
+            return true
+        }),
+
     body("password")
         .isLength({ min: 12, max: 16 }).withMessage("Password just be between 12 and 16 characters")
         .matches(/\d/).withMessage("Password must contain at least one number")
         .matches(/[a-z]/).withMessage("Password must contain at least one lowercase letter")
         .matches(/[A-Z]/).withMessage("Password must contain at least one uppercase letter")
         .matches(/\W/).withMessage("Password must contain at least one special character"),,
+
     body("confirm_password")
         .custom((value, { req }) => {
-            return value === req.body.password
-        }).withMessage("Passwords do not match"),
+            if (value !== req.body.password) {
+                throw new Error("Passwords do not match")
+            }
+            return true
+        }),
 ]
 
 module.exports.signUpPost = [
     validateUser,
     async (req, res) => {
-        const NO_MEMBERSHIP = 1
-        if (req.body.password !== req.body.confirm_password) {
-            // add errors
-            res.render("sign-up", {title: "Sign Up"})
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            return res
+                .status(400)
+                .render("sign-up", {title: "Sign Up", errors: errors.array()})
         }
 
-        await queries.insertUser(
-            req.body.first_name,
-            req.body.last_name,
-            req.body.username,
-            req.body.password,
-            NO_MEMBERSHIP,
-        )
+        const NO_MEMBERSHIP = 1
+        const { first_name, last_name, username, password } = req.body
+        try {
+            const hashedPassword = await bcrypt.hash(password, 10)
+            await queries.insertUser(
+                first_name,
+                last_name,
+                username,
+                hashedPassword,
+                NO_MEMBERSHIP,
+            )
 
-        res.redirect("/")
+            res.redirect("/")
+        } catch(error) {
+            console.error("Error inserting user", error)
+            res.render(500).render("sign-up", { title: "Sign Up", errors: ["Internal Service Error"]})
+        }
+
     }
 ]
