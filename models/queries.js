@@ -7,3 +7,13 @@ module.exports.insertUser = async (first_name, last_name, username, password, me
         [first_name, last_name, username, password, membership_id]
         )
 }
+
+module.exports.findUsername = async (username) => {
+    const { rows } = await db.query(
+        `SELECT * FROM account
+        WHERE username = $1`,
+        [username]
+    )
+
+    return rows
+}
