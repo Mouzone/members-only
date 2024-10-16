@@ -76,3 +76,7 @@ exports.joinClubGet =  (req, res) => {
 // exports.joinClubPost = async (req, res) => {
 //     await Account.updateToMember()
 // }
+
+exports.logInGet = (req, res) => {
+    res.render("log-in", {title: "Log In", errors: []})
+}
