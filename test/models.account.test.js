@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { insertUser, findByUsername } = require("../models/account");
+const { insertUser, findByUsername, updateToMember} = require("../models/account");
 const db = require("../config/database");
 
 describe('Query Account Table', function () {
@@ -26,9 +26,26 @@ describe('Query Account Table', function () {
             username: "johndoe",
             membership_id: 1
         })
-
-        await client.query(`DELETE FROM account WHERE username = $1`, ["johndoe"])
     })
+
+    it("should update the membership_id to 2 upon finding the user_id", async function () {
+        const query = `SELECT * FROM account WHERE username = $1`
+        const params = ["johndoe"]
+
+        // Fetch the account before the update
+        const initialResult = await client.query(query, params)
+        const accountId = initialResult.rows[0].account_id
+
+        await updateToMember(accountId)
+
+        // Check post update
+        const updatedResult = await client.query(query, params)
+        expect(updatedResult.rows[0].membership_id).to.equal(2)
+
+        // Cleanup
+        await client.query(`DELETE FROM account WHERE username = $1`, params)
+    })
+
 
     it('should return an empty array when fetching a username that does not exist in Account', async function () {
         const result = await findByUsername("johndoe")
