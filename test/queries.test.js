@@ -32,6 +32,6 @@ describe('Query Account Table', function () {
 
     it('should return an empty array when fetching a username that does not exist in Account', async function () {
         const result = await findUsername("johndoe")
-        expect(result.rows).to.have.lengthOf(0)
+        expect(result).to.have.lengthOf(0)
     })
 })

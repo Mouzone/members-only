@@ -1,3 +1,3 @@
 const { expect } = require('chai');
-const appController = require("controllers/appController")
+const appController = require("../controllers/appController")
 
