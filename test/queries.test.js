@@ -1,25 +1,37 @@
 const { expect } = require('chai');
-const {insertUser} = require("../models/queries");
-const db = require("../config/database")
+const { insertUser } = require("../models/queries");
+const db = require("../config/database");
 
 describe('Query Account Table', function () {
-    it ('should successfully insert to Account table', async function () {
-        let client;
+    let client
 
-        try {
-            client = await db.connect()
-            await insertUser("John", "Doe", "johndoe", "securepassword", 1); // Insert user into the table
+    before(async function () {
+        client = await db.connect()
+    })
 
-            const result = await client.query(`SELECT * FROM account WHERE username = $1`, ["johndoe"])
-            expect(result.rows).to.have.lengthOf(1)
-            expect(result.rows[0]).to.include({ first_name: "John", last_name: "Doe", username: "johndoe", membership_id: 1 })
-        } catch (error) {
-            expect.fail('Failed to insert into Account table: ' + error.message)
-        } finally {
-            if (client) {
-                await client.query(`DELETE FROM account WHERE username = $1`, ["johndoe"])
-                client.release();
-            }
+    after(async function () {
+        if (client) {
+            client.release()
         }
+    })
+
+    it('should successfully insert into the Account table', async function () {
+        await insertUser("John", "Doe", "johndoe", "securepassword", 1)
+
+        const result = await client.query(`SELECT * FROM account WHERE username = $1`, ["johndoe"])
+        expect(result.rows).to.have.lengthOf(1)
+        expect(result.rows[0]).to.include({
+            first_name: "John",
+            last_name: "Doe",
+            username: "johndoe",
+            membership_id: 1
+        })
+
+        await client.query(`DELETE FROM account WHERE username = $1`, ["johndoe"])
+    })
+
+    it('should return an empty array when fetching a username that does not exist in Account', async function () {
+        const result = await client.query(`SELECT * FROM account WHERE username = $1`, ["johndoe"])
+        expect(result.rows).to.have.lengthOf(0)
     })
 })
