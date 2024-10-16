@@ -8,11 +8,21 @@ exports.insertUser = async (first_name, last_name, username, password, membershi
         )
 }
 
-exports.findUsername = async (username) => {
+exports.findByUsername = async (username) => {
     const { rows } = await db.query(
         `SELECT * FROM account
         WHERE username = $1`,
         [username]
+    )
+
+    return rows
+}
+
+exports.findById = async (account_id) => {
+    const { rows } = await db.query(
+        `SELECT * FROM account
+        WHERE account_id = $1`,
+        [account_id]
     )
 
     return rows

@@ -1,4 +1,4 @@
-const queries = require("../models/queries")
+const Account = require("../models/account")
 const { body, validationResult } = require("express-validator")
 const bcrypt = require("bcryptjs")
 
@@ -17,7 +17,7 @@ const validateUser = [
     body("username").trim()
         .matches(/^\S*$/).withMessage("Username must not contain spaces") // Check for spaces
         .custom(async (value) => {
-            const result = await queries.findUsername(value)
+            const result = await Account.findByUsername(value)
             if (result.length !== 0) {
                 throw new Error("Username already in use")
             }
@@ -54,7 +54,7 @@ exports.signUpPost = [
         const { first_name, last_name, username, password } = req.body
         try {
             const hashedPassword = await bcrypt.hash(password, 10)
-            await queries.insertUser(
+            await Account.insertUser(
                 first_name,
                 last_name,
                 username,
@@ -74,5 +74,5 @@ exports.joinClubGet =  (req, res) => {
 }
 
 // exports.joinClubPost = async (req, res) => {
-//     await queries.updateToMember()
+//     await Account.updateToMember()
 // }

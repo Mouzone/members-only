@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { insertUser, findUsername } = require("../models/queries");
+const { insertUser, findByUsername } = require("../models/account");
 const db = require("../config/database");
 
 describe('Query Account Table', function () {
@@ -31,7 +31,7 @@ describe('Query Account Table', function () {
     })
 
     it('should return an empty array when fetching a username that does not exist in Account', async function () {
-        const result = await findUsername("johndoe")
+        const result = await findByUsername("johndoe")
         expect(result).to.have.lengthOf(0)
     })
 })
