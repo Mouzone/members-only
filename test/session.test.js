@@ -17,8 +17,8 @@ describe('Session Management', function () {
         // dummy path to mimic posting a new session
         app.get('/set-session', (req, res) => {
             req.session.userId = 12345
-            // status message
-            res.send('Session set')
+            req.session.testSession = true // add this flag to make it easier to find and delete test sessions
+            res.send('Session set') // status message
         })
 
         // dummy path to get session id to mimic a user doing an action that will send their cookie
@@ -33,7 +33,15 @@ describe('Session Management', function () {
 
     // clean up
     after(function (done) {
-        pool.end(done)
+        pool.query(
+            `DELETE FROM session WHERE sess::jsonb @> '{"testSession": true}'`,
+            (err) => {
+                if (err) return done(err)
+
+                // Clean up the database connection
+                pool.end(done)
+            }
+        )
     })
 
     it('should store session in PostgreSQL and retrieve it', function (done) {
