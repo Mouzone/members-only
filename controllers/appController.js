@@ -8,7 +8,7 @@ exports.indexGet = async (req, res) => {
     const result = await Account.getMembershipIdFromId(req.session.passport?.user)
     const render_variables = { title: "Main", membership: 0, messages: null}
 
-    if (!result) {
+    if (result.length === 0) {
         render_variables.messages = await Message.getAllMessagesAnonymous()
     } else if (result.membership_id === 1) {
         render_variables.membership = 1
@@ -128,7 +128,15 @@ exports.logOutPost = (req, res, next) => {
         if (error) {
             return next(error)
         }
-        res.redirect("/")
+
+        req.session.destroy((error) => {
+            if (error) {
+                return next(error)
+            }
+
+            res.clearCookie('connect.sid')
+            res.redirect("/")
+        })
     })
 }
 

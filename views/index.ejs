@@ -8,7 +8,7 @@
     <body>
 <!--        this is at the top for navbar-->
         <div>
-            <% if (!authenticated) { %>
+            <% if (membership === 0) { %>
                 <form action="/login" method="GET">
                     <button type="submit"> Log In </button>
                 </form>
@@ -31,7 +31,8 @@
                 <%= message?.timestamp %>
             </div>
         <% }) %>
-        <% if (authenticated) { %>
+
+        <% if (membership === 2) { %>
             <form action="/new-message" method = "POST">
                 <label for="title"> Title </label>
                 <input type="text" id="title" name="title" required>
