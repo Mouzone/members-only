@@ -7,6 +7,12 @@
     </head>
     <body>
         <h1><%= title %></h1>
+        <% errors.forEach(error => { %>
+            <div>
+                <%= error %>
+            </div>
+        <% }) %>
+
         <form action="/join-club" method="POST">
             <label for="club_password"> Enter Secret Password: </label>
             <input type="text" id="club_password" name="club_password">

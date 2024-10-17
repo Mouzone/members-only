@@ -107,9 +107,12 @@ exports.joinClubPost = async (req, res) => {
         return res.status(401).send('User not authenticated') // or redirect to login
     }
 
-    const account_id = req.session.passport.user
+    if (req.body.club_password !== process.env.CLUB_PASSWORD) {
+        return res.render("join-club", {title: "Join Club", errors: ["Invalid Password"] })
+    }
 
     try {
+        const account_id = req.session.passport.user
         await Account.updateToMember(account_id)
         res.redirect("/")
     } catch (error) {
