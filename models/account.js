@@ -37,7 +37,7 @@ exports.updateToMember = async (account_id) => {
 }
 
 exports.getIdFromUsername = async (username) => {
-    const { rows } = db.query(
+    const { rows } = await db.query(
         `SELECT account_id FROM account
         WHERE username = $1`,
         [username]

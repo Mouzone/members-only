@@ -70,11 +70,11 @@ exports.signUpPost = [
                 hashedPassword,
                 NO_MEMBERSHIP,
             )
-            req.session.regenerate((err) => {
+            req.session.regenerate(async (err) => {
                 if (err) {
                     return res.status(500).send("Error regenerating session")
                 }
-                const result = Account.getIdFromUsername(username)
+                const result = await Account.getIdFromUsername(username)
                 const newUserId = result[0].account_id
                 req.session.passport = { user: newUserId }
 
