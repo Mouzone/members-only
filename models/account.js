@@ -10,7 +10,7 @@ exports.insertUser = async (first_name, last_name, username, password, membershi
 
 exports.findByUsername = async (username) => {
     const { rows } = await db.query(
-                        `SELECT 1 FROM account
+                        `SELECT account_id, username, password FROM account
                         WHERE username = $1`,
                         [username]
                     )
