@@ -4,7 +4,7 @@ const { body, validationResult } = require("express-validator")
 const bcrypt = require("bcryptjs")
 
 exports.indexGet = async (req, res) => {
-    const authenticated = req.session.passport?.user ?? null
+    const authenticated = req.session.passport?.user
     const messages = authenticated
                     ? await Message.getAllMessagesNamed()
                     : await Message.getAllMessagesAnonymous()
@@ -70,7 +70,16 @@ exports.signUpPost = [
                 hashedPassword,
                 NO_MEMBERSHIP,
             )
-            res.redirect("/")
+            req.session.regenerate((err) => {
+                if (err) {
+                    return res.status(500).send("Error regenerating session")
+                }
+                const result = Account.getIdFromUsername(username)
+                const newUserId = result[0].account_id
+                req.session.passport = { user: newUserId }
+
+                res.redirect("/")
+            })
         } catch(error) {
             console.error("Error inserting user", error)
             res.status(500).render("sign-up", { title: "Sign Up", errors: ["Internal Service Error"]})
