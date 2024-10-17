@@ -1,4 +1,5 @@
 const Account = require("../models/account")
+const Message = require("../models/message")
 const { body, validationResult } = require("express-validator")
 const bcrypt = require("bcryptjs")
 
@@ -110,6 +111,11 @@ exports.logOutPost = (req, res, next) => {
 }
 
 exports.newMessagePost = async (req, res) => {
-    await Message.insertMessage(req.body.title, req.body.text)
+    await Message.insertMessage(
+        req.session.passport.user,
+        new Date(),
+        req.body.title,
+        req.body.text,
+    )
     res.redirect("/")
 }
