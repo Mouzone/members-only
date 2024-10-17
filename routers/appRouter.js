@@ -3,6 +3,8 @@ const appRouter = Router()
 const appController = require('../controllers/appController')
 const passport = require('../config/passport')
 
+appRouter.get("/", appController.indexGet)
+
 appRouter.get("/sign-up", appController.signUpGet)
 appRouter.post("/sign-up", appController.signUpPost)
 

@@ -2,6 +2,10 @@ const Account = require("../models/account")
 const { body, validationResult } = require("express-validator")
 const bcrypt = require("bcryptjs")
 
+exports.indexGet = (req, res) => {
+    res.render("index", {title: "Main"})
+}
+
 exports.signUpGet = (req, res) => {
     res.render("sign-up", {title: "Sign Up", errors: []})
 }
