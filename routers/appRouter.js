@@ -21,4 +21,6 @@ appRouter.post("/login",
 
 appRouter.post("/logout", appController.logOutPost)
 
+appRouter.post("/new-message", appController.newMessagePost)
+
 module.exports = appRouter

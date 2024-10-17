@@ -108,3 +108,8 @@ exports.logOutPost = (req, res, next) => {
         res.redirect("/")
     })
 }
+
+exports.newMessagePost = async (req, res) => {
+    await Message.insertMessage(req.body.title, req.body.text)
+    res.redirect("/")
+}
