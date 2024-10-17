@@ -15,7 +15,7 @@ appRouter.get("/login", appController.logInGet)
 appRouter.post("/login",
     passport.authenticate(
     "local",
-        {successRedirect: "/success", failureRedirect: "/failure"}
+        {successRedirect: "/", failureRedirect: "/login"}
     )
 )
 

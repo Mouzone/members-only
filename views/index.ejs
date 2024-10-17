@@ -6,11 +6,26 @@
         <title><%= title %></title>
     </head>
     <body>
-        <form action="/login" method="GEt">
-            <button type="submit"> Log In </button>
-        </form>
-        <form action="/sign-up" method="GET">
-            <button type="submit"> Sign Up </button>
-        </form>
+<!--        this is at the top for navbar-->
+        <% if (!authenticated) { %>
+            <div>
+                <form action="/login" method="GEt">
+                    <button type="submit"> Log In </button>
+                </form>
+                <form action="/sign-up" method="GET">
+                    <button type="submit"> Sign Up </button>
+                </form>
+            </div>
+        <% } %>
+<!--this would be where the messages show-->
+        <% if (authenticated) { %>
+            <form action="/new-message" method = "POST">
+                <label for="title"> Title </label>
+                <input type="text" id="title" name="title" required>
+                <label for="text"> Message </label>
+                <textarea id="text" maxlength="255" required> </textarea>
+                <button type="submit"> Send </button>
+            </form>
+        <% } %>
     </body>
 </html>

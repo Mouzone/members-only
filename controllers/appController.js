@@ -3,7 +3,8 @@ const { body, validationResult } = require("express-validator")
 const bcrypt = require("bcryptjs")
 
 exports.indexGet = (req, res) => {
-    res.render("index", {title: "Main"})
+    const authenticated = req.session.passport.user ?? null
+    res.render("index", {title: "Main", authenticated})
 }
 
 exports.signUpGet = (req, res) => {
