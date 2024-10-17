@@ -10,7 +10,7 @@ exports.indexGet = async (req, res) => {
 
     if (result.length === 0) {
         render_variables.messages = await Message.getAllMessagesAnonymous()
-    } else if (result.membership_id === 1) {
+    } else if (result[0].membership_id === 1) {
         render_variables.membership = 1
         render_variables.messages = await Message.getAllMessagesNamed()
     } else {
