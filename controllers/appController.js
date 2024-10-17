@@ -5,7 +5,9 @@ const bcrypt = require("bcryptjs")
 
 exports.indexGet = async (req, res) => {
     const authenticated = req.session.passport.user ?? null
-    const messages = await Message.getAllMessagesAnonymous()
+    const messages = authenticated
+                    ? await Message.getAllMessagesNamed()
+                    : await Message.getAllMessagesAnonymous()
     res.render("index", {title: "Main", authenticated, messages})
 }
 

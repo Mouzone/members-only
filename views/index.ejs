@@ -22,7 +22,8 @@
             <div>
                 <%= message.title %>
                 <%= message.text %>
-                <%= message.timestamp %>
+                <%= message?.username %>
+                <%= message?.timestamp %>
             </div>
         <% }) %>
         <% if (authenticated) { %>
