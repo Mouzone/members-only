@@ -15,10 +15,9 @@ exports.indexGet = async (req, res) => {
         render_variables.messages = await Message.getAllMessagesNamed()
 
         const admin_status_result = await Account.getAdminStatus(req.session.passport.user)
-        render_variables.admin = admin_status_result[0]
+        render_variables.admin = admin_status_result[0].admin
     }
 
-    console.log(render_variables)
     res.render("index", render_variables)
 }
 
