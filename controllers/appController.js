@@ -3,9 +3,10 @@ const Message = require("../models/message")
 const { body, validationResult } = require("express-validator")
 const bcrypt = require("bcryptjs")
 
-exports.indexGet = (req, res) => {
+exports.indexGet = async (req, res) => {
     const authenticated = req.session.passport.user ?? null
-    res.render("index", {title: "Main", authenticated})
+    const messages = await Message.getAllMessagesAnonymous()
+    res.render("index", {title: "Main", authenticated, messages})
 }
 
 exports.signUpGet = (req, res) => {

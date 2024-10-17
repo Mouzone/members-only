@@ -7,3 +7,12 @@ exports.insertMessage = async (account_id, timestamp, title, text) => {
         [account_id, timestamp, title, text]
     )
 }
+
+exports.getAllMessagesAnonymous = async () => {
+    const { rows } = await db.query(
+                        `SELECT * FROM message
+                        ORDER BY timestamp DESC`
+                    )
+
+    return rows
+}

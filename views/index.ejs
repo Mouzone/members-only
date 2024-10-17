@@ -18,6 +18,13 @@
             </div>
         <% } %>
 <!--this would be where the messages show-->
+        <% messages.forEach(message => { %>
+            <div>
+                <%= message.title %>
+                <%= message.text %>
+                <%= message.timestamp %>
+            </div>
+        <% }) %>
         <% if (authenticated) { %>
             <form action="/new-message" method = "POST">
                 <label for="title"> Title </label>
