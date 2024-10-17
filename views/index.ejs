@@ -7,16 +7,21 @@
     </head>
     <body>
 <!--        this is at the top for navbar-->
-        <% if (!authenticated) { %>
-            <div>
-                <form action="/login" method="GEt">
+        <div>
+            <% if (!authenticated) { %>
+                <form action="/login" method="GET">
                     <button type="submit"> Log In </button>
                 </form>
                 <form action="/sign-up" method="GET">
                     <button type="submit"> Sign Up </button>
                 </form>
-            </div>
-        <% } %>
+            <% } else { %>
+                <form action="/logout" method="POST">
+                    <button type="submit"> Log Out </button>
+                </form>
+            <% } %>
+        </div>
+
 <!--this would be where the messages show-->
         <% messages.forEach(message => { %>
             <div>

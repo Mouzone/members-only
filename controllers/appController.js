@@ -4,7 +4,7 @@ const { body, validationResult } = require("express-validator")
 const bcrypt = require("bcryptjs")
 
 exports.indexGet = async (req, res) => {
-    const authenticated = req.session.passport.user ?? null
+    const authenticated = req.session.passport?.user ?? null
     const messages = authenticated
                     ? await Message.getAllMessagesNamed()
                     : await Message.getAllMessagesAnonymous()
