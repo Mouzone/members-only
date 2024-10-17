@@ -30,7 +30,11 @@
                 <%= message?.timestamp %>
             </div>
         <% }) %>
-
+        <% if (membership === 1) { %>
+            <form action="/join-club" method="GET">
+                <button type="submit"> Join Club </button>
+            </form>
+        <% }%>
         <% if (membership === 2) { %>
             <form action="/new-message" method = "POST">
                 <label for="title"> Title </label>
