@@ -29,6 +29,11 @@
                 <%= message?.username %>
                 <%= message?.timestamp %>
             </div>
+            <% if (admin) { %>
+                <form action="/delete-message/<%= message.message_id %>" method="POST">
+                    <button type="submit"> Delete </button>
+                </form>
+            <% } %>
         <% }) %>
         <% if (membership === 1) { %>
             <form action="/join-club" method="GET">

@@ -5,19 +5,20 @@ const bcrypt = require("bcryptjs")
 
 exports.indexGet = async (req, res) => {
     // any person can read, any USER can see details, any MEMBER can write
-    const result = await Account.getMembershipIdFromId(req.session.passport?.user)
-    const render_variables = { title: "Main", membership: 0, messages: null}
+    const membership_id_result = await Account.getMembershipIdFromId(req.session.passport?.user)
+    const render_variables = { title: "Main", membership: 0, messages: null, admin: false}
 
-    if (result.length === 0) {
+    if (membership_id_result.length === 0) {
         render_variables.messages = await Message.getAllMessagesAnonymous()
-    } else if (result[0].membership_id === 1) {
-        render_variables.membership = 1
-        render_variables.messages = await Message.getAllMessagesNamed()
     } else {
-        render_variables.membership = 2
+        render_variables.membership = membership_id_result[0].membership_id
         render_variables.messages = await Message.getAllMessagesNamed()
+
+        const admin_status_result = await Account.getAdminStatus(req.session.passport.user)
+        render_variables.admin = admin_status_result[0]
     }
 
+    console.log(render_variables)
     res.render("index", render_variables)
 }
 
@@ -150,5 +151,10 @@ exports.newMessagePost = async (req, res) => {
         req.body.title,
         req.body.text,
     )
+    res.redirect("/")
+}
+
+exports.deleteMessagePost = async (req, res) => {
+    await Message.deleteMessage(req.params.message_id)
     res.redirect("/")
 }

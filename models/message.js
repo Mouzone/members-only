@@ -19,9 +19,17 @@ exports.getAllMessagesAnonymous = async () => {
 
 exports.getAllMessagesNamed = async () => {
     const { rows} = await db.query(
-        `SELECT username, timestamp, title, text FROM message
+        `SELECT message_id, username, timestamp, title, text FROM message
         JOIN account ON message.account_id = account.account_id`
     )
 
     return rows
+}
+
+exports.deleteMessage = async (message_id) => {
+    await db.query(
+        `DELETE FROM message 
+       WHERE message_id = $1`,
+        [message_id]
+    )
 }

@@ -23,4 +23,6 @@ appRouter.post("/logout", appController.logOutPost)
 
 appRouter.post("/new-message", appController.newMessagePost)
 
+appRouter.post("/delete-message/:message_id", appController.deleteMessagePost)
+
 module.exports = appRouter

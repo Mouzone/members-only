@@ -55,3 +55,13 @@ exports.getMembershipIdFromId = async (account_id) => {
 
     return rows
 }
+
+exports.getAdminStatus = async (account_id) => {
+    const { rows } = await db.query(
+        `SELECT admin FROM account
+        WHERE account_id = $1`,
+        [account_id]
+    )
+
+    return rows
+}
