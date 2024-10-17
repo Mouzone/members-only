@@ -4,11 +4,21 @@ const { body, validationResult } = require("express-validator")
 const bcrypt = require("bcryptjs")
 
 exports.indexGet = async (req, res) => {
-    const authenticated = req.session.passport?.user
-    const messages = authenticated
-                    ? await Message.getAllMessagesNamed()
-                    : await Message.getAllMessagesAnonymous()
-    res.render("index", {title: "Main", authenticated, messages})
+    // any person can read, any USER can see details, any MEMBER can write
+    const result = await Account.getMembershipIdFromId(req.session.passport?.user)
+    const render_variables = { title: "Main", membership: 0, messages: null}
+
+    if (!result) {
+        render_variables.messages = await Message.getAllMessagesAnonymous()
+    } else if (result.membership_id === 1) {
+        render_variables.membership = 1
+        render_variables.messages = await Message.getAllMessagesNamed()
+    } else {
+        render_variables.membership = 2
+        render_variables.messages = await Message.getAllMessagesNamed()
+    }
+
+    res.render("index", render_variables)
 }
 
 exports.signUpGet = (req, res) => {
